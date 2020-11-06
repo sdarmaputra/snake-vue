@@ -54,7 +54,6 @@ export default defineComponent({
       this.mealPositions = Array(3).fill(null).map((value, index) => (
         randomizeMealPosition(this.gameConfig.arenaConfig, index + 1)
       ));
-      console.log(this.mealPositions);
     },
 
     startSnakeMovement() {

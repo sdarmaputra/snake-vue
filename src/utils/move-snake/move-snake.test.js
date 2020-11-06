@@ -1,11 +1,5 @@
 import moveSnake from './index';
 
-const snakePositionsMock = [
-  { x: 10, y: 1 },
-  { x: 11, y: 1 },
-  { x: 12, y: 1 },
-];
-
 const gameConfigMock = {
   arenaConfig: {
     width: 8,
