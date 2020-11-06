@@ -57,7 +57,6 @@ export default defineComponent({
   methods: {
     initiateEventListeners() {
       document.addEventListener('keydown', (event) => {
-        console.log('setDir', event.code);
         this.setDirection(keyDirectionMap[event.code]);
       });
     },
