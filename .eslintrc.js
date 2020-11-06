@@ -2,9 +2,10 @@ module.exports = {
   root: true,
   env: {
     node: true,
+    'jest/globals': true,
   },
   extends: [
-    'plugin:vue/vue3-essential',
+    'plugin:vue/vue3-recommended',
     '@vue/airbnb',
     '@vue/typescript/recommended',
   ],
@@ -26,4 +27,5 @@ module.exports = {
       },
     },
   ],
+  plugins: ['jest'],
 };
