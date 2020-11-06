@@ -20,7 +20,7 @@ import {
   ArenaMatrix,
   ArenaConfig,
   Positions,
-} from '../types/Arena';
+} from '../../types/Arena';
 
 export default defineComponent({
   name: 'GameArena',

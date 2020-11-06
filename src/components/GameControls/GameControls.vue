@@ -2,6 +2,7 @@
   <div class="controls">
     <button
       class="controls__button"
+      data-testid="up-button"
       @click="setDirection('up')"
     >
       &uarr;
@@ -10,6 +11,7 @@
     <div class="controls__middle">
       <button
         class="controls__button"
+        data-testid="left-button"
         @click="setDirection('left')"
       >
         &larr;
@@ -19,6 +21,7 @@
       </div>
       <button
         class="controls__button"
+        data-testid="right-button"
         @click="setDirection('right')"
       >
         &rarr;
@@ -27,6 +30,7 @@
 
     <button
       class="controls__button"
+      data-testid="down-button"
       @click="setDirection('down')"
     >
       &darr;
@@ -36,7 +40,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { Direction, KeyDirectionMap } from '../types/Control';
+import { Direction, KeyDirectionMap } from '../../types/Control';
 
 const keyDirectionMap: KeyDirectionMap = {
   ArrowLeft: 'left',

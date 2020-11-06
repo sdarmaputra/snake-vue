@@ -10,8 +10,8 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import GameArena from './components/GameArena.vue';
-import GameControls from './components/GameControls.vue';
+import GameArena from './components/GameArena';
+import GameControls from './components/GameControls';
 import { gameConfig, initialSnakePositions } from './configs';
 import {
   Positions,
