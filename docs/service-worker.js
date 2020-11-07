@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/precache-manifest.130fdd16da98b2f2640e55be2339a41c.js"
+  "/snake-vue/precache-manifest.6555772e284eeef9469995c17aba68bf.js"
 );
 
 workbox.core.setCacheNameDetails({prefix: "snake-vue"});
