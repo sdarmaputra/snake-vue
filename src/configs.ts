@@ -1,6 +1,6 @@
 import { GameConfig, Positions } from './types/Arena';
 
-export const gameConfig: GameConfig = {
+export const initialGameConfig: GameConfig = {
   arenaConfig: {
     width: 28,
     height: 24,

@@ -15,12 +15,19 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
 import {
-  ArenaMatrix,
+  defineComponent,
+  onMounted,
+  ref,
+  toRefs,
+  watch,
+} from 'vue';
+import {
   ArenaConfig,
+  ArenaMatrix,
   Positions,
 } from '../../types/Arena';
+import drawArenaMatrix from '../../utils/draw-arena-matrix';
 
 export default defineComponent({
   name: 'GameArena',
@@ -47,47 +54,31 @@ export default defineComponent({
 
   emits: ['eat'],
 
-  data() {
-    return {
-      arenaMatrix: [] as ArenaMatrix,
-    };
-  },
+  setup(props, { emit }) {
+    const arenaMatrix = ref<ArenaMatrix>([]);
+    const { snakePositions } = toRefs(props);
 
-  watch: {
-    snakePositions() {
-      this.drawArenaMatrix();
-    },
-  },
+    function drawArena(): void {
+      const { arenaMatrix: matrix, eatenMealPosition } = drawArenaMatrix({
+        arenaConfig: props.config,
+        mealPositions: props.mealPositions,
+        snakePositions: props.snakePositions,
+      });
 
-  mounted() {
-    this.drawArenaMatrix();
-  },
+      arenaMatrix.value = matrix;
 
-  methods: {
-    drawArenaMatrix() {
-      const arena: ArenaMatrix = Array(this.config.height);
-
-      for (let row = 0; row < this.config.height; row += 1) {
-        for (let col = 0; col < this.config.width; col += 1) {
-          if (!Array.isArray(arena[row])) {
-            arena[row] = [];
-          }
-
-          arena[row][col] = 'empty';
-        }
+      if (eatenMealPosition) {
+        emit('eat', eatenMealPosition);
       }
+    }
 
-      this.mealPositions.forEach(({ x, y }) => {
-        arena[y][x] = 'meal';
-      });
+    watch(snakePositions, () => drawArena());
 
-      this.snakePositions.forEach(({ x, y }) => {
-        if (arena[y][x] === 'meal') this.$emit('eat', { x, y });
-        arena[y][x] = 'snake';
-      });
+    onMounted(() => drawArena());
 
-      this.arenaMatrix = arena;
-    },
+    return {
+      arenaMatrix,
+    };
   },
 });
 </script>

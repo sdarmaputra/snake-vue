@@ -9,11 +9,17 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import {
+  defineComponent,
+  onMounted,
+  reactive,
+  ref,
+} from 'vue';
 import GameArena from './components/GameArena';
 import GameControls from './components/GameControls';
-import { gameConfig, initialSnakePositions } from './configs';
+import { initialGameConfig, initialSnakePositions } from './configs';
 import {
+  GameConfig,
   Positions,
   Position,
 } from './types/Arena';
@@ -30,61 +36,61 @@ export default defineComponent({
     GameControls,
   },
 
-  data() {
-    return {
-      gameConfig,
-      direction: 'right' as Direction,
-      movementInterval: undefined as number | undefined,
-      mealPositions: [] as Positions,
-      snakePositions: initialSnakePositions,
-    };
-  },
+  setup() {
+    const gameConfig = reactive<GameConfig>(initialGameConfig);
+    const direction = ref<Direction>('right');
+    const movementInterval = ref<number | undefined>(undefined);
+    const mealPositions = ref<Positions>([]);
+    const snakePositions = ref<Positions>(initialSnakePositions);
 
-  mounted() {
-    this.startGame();
-  },
+    function setDirection(newDirection: Direction): void {
+      direction.value = changeDirection(newDirection, direction.value);
+    }
 
-  methods: {
-    startGame() {
-      this.initiateMealPositions();
-      this.startSnakeMovement();
-    },
+    function eat(eatenMealPosition: Position): void {
+      mealPositions.value = [
+        ...mealPositions.value.filter(({ x, y }) => (
+          !(x === eatenMealPosition.x && y === eatenMealPosition.y)
+        )),
+        randomizeMealPosition(gameConfig.arenaConfig),
+      ];
+      gameConfig.snakeConfig.length += 1;
+    }
 
-    initiateMealPositions() {
-      this.mealPositions = Array(3).fill(null).map((value, index) => (
-        randomizeMealPosition(this.gameConfig.arenaConfig, index + 1)
+    function stopSnakeMovement(): void {
+      clearInterval(movementInterval.value);
+      movementInterval.value = undefined;
+    }
+
+    function initiateMealPositions(): void {
+      mealPositions.value = Array(3).fill(null).map((value, index) => (
+        randomizeMealPosition(gameConfig.arenaConfig, index + 1)
       ));
-    },
+    }
 
-    startSnakeMovement() {
-      this.movementInterval = setInterval(() => {
+    function startSnakeMovement(): void {
+      movementInterval.value = setInterval(() => {
         try {
-          this.snakePositions = moveSnake(this.snakePositions, this.direction, this.gameConfig);
+          snakePositions.value = moveSnake(snakePositions.value, direction.value, gameConfig);
         } catch (error) {
-          this.stopSnakeMovement();
+          stopSnakeMovement();
           alert(error.message);
         }
       }, 300);
-    },
+    }
 
-    stopSnakeMovement() {
-      clearInterval(this.movementInterval);
-      this.movementInterval = undefined;
-    },
+    onMounted(() => {
+      initiateMealPositions();
+      startSnakeMovement();
+    });
 
-    setDirection(direction: Direction) {
-      this.direction = changeDirection(direction, this.direction);
-    },
-
-    eat(eatenMealPosition: Position) {
-      this.mealPositions = [
-        ...this.mealPositions.filter(({ x, y }) => (
-          !(x === eatenMealPosition.x && y === eatenMealPosition.y)
-        )),
-        randomizeMealPosition(this.gameConfig.arenaConfig),
-      ];
-      this.gameConfig.snakeConfig.length += 1;
-    },
+    return {
+      eat,
+      gameConfig,
+      mealPositions,
+      snakePositions,
+      setDirection,
+    };
   },
 });
 </script>

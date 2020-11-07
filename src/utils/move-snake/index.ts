@@ -11,7 +11,7 @@ function locateHead(
   direction: Direction,
   arenaConfig: ArenaConfig,
 ): Position {
-  const errorMessage = 'mentok gan';
+  const errorMessage = 'Ouch!';
   let newX: number;
   let newY: number;
 
