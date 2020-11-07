@@ -6,4 +6,5 @@ yarn build --dest demo
 git add .
 git commit -m "build demo $(date +'%Y%m%d-%H%M%S')"
 git push origin demo
+git checkout main
 rm -rf demo
