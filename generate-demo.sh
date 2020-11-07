@@ -1,6 +1,7 @@
 #! /bin/bash
 
 git checkout -b demo
+git pull origin demo
 rm -rf docs
 git pull origin main
 yarn build --dest docs
