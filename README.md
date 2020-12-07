@@ -1,5 +1,8 @@
 # snake-vue
 
+A simple snake game to learn how to use Vue 3 and Typescript. This project is generated using [Vue CLI](https://cli.vuejs.org/).
+
+
 ## Project setup
 ```
 yarn install
